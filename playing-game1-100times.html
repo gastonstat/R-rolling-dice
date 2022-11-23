@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 Playing Game-A 100 times | Rolling Dice with R</title>
+  <meta name="description" content="<p>This tutorial describes a couple of examples for implementing simulations
+of games of chance in R.</p>" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 Playing Game-A 100 times | Rolling Dice with R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="https://www.gastonsanchez.com/R-rolling-dice/images/demere-cover.png" />
+  <meta property="og:description" content="<p>This tutorial describes a couple of examples for implementing simulations
+of games of chance in R.</p>" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 Playing Game-A 100 times | Rolling Dice with R" />
+  
+  <meta name="twitter:description" content="<p>This tutorial describes a couple of examples for implementing simulations
+of games of chance in R.</p>" />
+  <meta name="twitter:image" content="https://www.gastonsanchez.com/R-rolling-dice/images/demere-cover.png" />
+
+<meta name="author" content="Gaston Sanchez" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="vectorized-loops-with-apply.html"/>
+<link rel="next" href="running-various-simulations.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"><b>Rolling Dice with R</b><br><small>Gaston Sanchez</small></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#my-series-of-r-tutorials"><i class="fa fa-check"></i>My Series of R Tutorials</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#donation"><i class="fa fa-check"></i>Donation</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#description-of-game-a"><i class="fa fa-check"></i><b>1.1</b> Description of Game-A</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#probability-of-winning-game-a"><i class="fa fa-check"></i><b>1.2</b> Probability of winning Game-A</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="introduction.html"><a href="introduction.html#no-six-in-four-rolls"><i class="fa fa-check"></i><b>1.2.1</b> No six in four rolls</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="coding-game-a.html"><a href="coding-game-a.html"><i class="fa fa-check"></i><b>2</b> Coding Game-A</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="coding-game-a.html"><a href="coding-game-a.html#rolling-one-die"><i class="fa fa-check"></i><b>2.1</b> Rolling one die</a></li>
+<li class="chapter" data-level="2.2" data-path="coding-game-a.html"><a href="coding-game-a.html#rolling-dice-with-sample"><i class="fa fa-check"></i><b>2.2</b> Rolling dice with <code>sample()</code></a></li>
+<li class="chapter" data-level="2.3" data-path="coding-game-a.html"><a href="coding-game-a.html#rolling-four-dice"><i class="fa fa-check"></i><b>2.3</b> Rolling four dice</a></li>
+<li class="chapter" data-level="2.4" data-path="coding-game-a.html"><a href="coding-game-a.html#playing-game-a-once"><i class="fa fa-check"></i><b>2.4</b> Playing Game-A once</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="playing-game-a-a-few-times.html"><a href="playing-game-a-a-few-times.html"><i class="fa fa-check"></i><b>3</b> Playing Game-A a Few Times</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="playing-game-a-a-few-times.html"><a href="playing-game-a-a-few-times.html#playing-game-a-five-times"><i class="fa fa-check"></i><b>3.1</b> Playing Game-A Five Times</a></li>
+<li class="chapter" data-level="3.2" data-path="playing-game-a-a-few-times.html"><a href="playing-game-a-a-few-times.html#using-a-for-loop"><i class="fa fa-check"></i><b>3.2</b> Using a <code>for()</code> loop</a></li>
+<li class="chapter" data-level="3.3" data-path="playing-game-a-a-few-times.html"><a href="playing-game-a-a-few-times.html#playing-game-a-10-times"><i class="fa fa-check"></i><b>3.3</b> Playing Game-A 10 times</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="vectorized-loops-with-apply.html"><a href="vectorized-loops-with-apply.html"><i class="fa fa-check"></i><b>4</b> Vectorized loops with <code>apply()</code></a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="vectorized-loops-with-apply.html"><a href="vectorized-loops-with-apply.html#function-apply"><i class="fa fa-check"></i><b>4.1</b> Function <code>apply()</code></a></li>
+<li class="chapter" data-level="4.2" data-path="vectorized-loops-with-apply.html"><a href="vectorized-loops-with-apply.html#anonymous-functions-and-apply"><i class="fa fa-check"></i><b>4.2</b> Anonymous functions and <code>apply()</code></a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="vectorized-loops-with-apply.html"><a href="vectorized-loops-with-apply.html#number-of-wins-with-apply"><i class="fa fa-check"></i><b>4.2.1</b> Number of wins with <code>apply()</code></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="playing-game1-100times.html"><a href="playing-game1-100times.html"><i class="fa fa-check"></i><b>5</b> Playing Game-A 100 times</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="playing-game1-100times.html"><a href="playing-game1-100times.html#computing-cumulative-gains"><i class="fa fa-check"></i><b>5.1</b> Computing Cumulative Gains</a></li>
+<li class="chapter" data-level="5.2" data-path="playing-game1-100times.html"><a href="playing-game1-100times.html#plotting-cumulative-gains"><i class="fa fa-check"></i><b>5.2</b> Plotting Cumulative Gains</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="playing-game1-100times.html"><a href="playing-game1-100times.html#cumulative-gains-with-plot"><i class="fa fa-check"></i><b>5.2.1</b> Cumulative Gains with <code>plot()</code></a></li>
+<li class="chapter" data-level="5.2.2" data-path="playing-game1-100times.html"><a href="playing-game1-100times.html#cum-gains-ggplot"><i class="fa fa-check"></i><b>5.2.2</b> Cumulative Gains with <code>ggplot2</code></a></li>
+<li class="chapter" data-level="5.2.3" data-path="playing-game1-100times.html"><a href="playing-game1-100times.html#animated-ggplot-graphic"><i class="fa fa-check"></i><b>5.2.3</b> Animated ggplot graphic</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="running-various-simulations.html"><a href="running-various-simulations.html"><i class="fa fa-check"></i><b>6</b> Running Various Simulations</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="running-various-simulations.html"><a href="running-various-simulations.html#embedded-for-loops"><i class="fa fa-check"></i><b>6.1</b> Embedded <code>for()</code> loops</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="running-even-more-simulations.html"><a href="running-even-more-simulations.html"><i class="fa fa-check"></i><b>7</b> Running Even More Simulations</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="running-even-more-simulations.html"><a href="running-even-more-simulations.html#graphing-cumulative-gains"><i class="fa fa-check"></i><b>7.1</b> Graphing Cumulative Gains</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="running-even-more-simulations.html"><a href="running-even-more-simulations.html#plotting-the-first-simulation"><i class="fa fa-check"></i><b>7.1.1</b> Plotting the first simulation</a></li>
+<li class="chapter" data-level="7.1.2" data-path="running-even-more-simulations.html"><a href="running-even-more-simulations.html#plotting-the-first-four-simulations"><i class="fa fa-check"></i><b>7.1.2</b> Plotting the first four simulations</a></li>
+<li class="chapter" data-level="7.1.3" data-path="running-even-more-simulations.html"><a href="running-even-more-simulations.html#plotting-all-simulations"><i class="fa fa-check"></i><b>7.1.3</b> Plotting all simulations</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://www.gastonsanchez.com" target="_blank">gastonsanchez.com</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Rolling Dice with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="playing-game1-100times" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">5</span> Playing Game-A 100 times<a href="playing-game1-100times.html#playing-game1-100times" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>With all the coding elements that we have discussed so far, it’s time to play
+Game-A 100 times, and see what the proportion of wins turns out to be:</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="playing-game1-100times.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># random seed (for reproducibility purposes)</span></span>
+<span id="cb65-2"><a href="playing-game1-100times.html#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">753</span>)</span>
+<span id="cb65-3"><a href="playing-game1-100times.html#cb65-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-4"><a href="playing-game1-100times.html#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="co"># main inputs</span></span>
+<span id="cb65-5"><a href="playing-game1-100times.html#cb65-5" aria-hidden="true" tabindex="-1"></a>die <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span></span>
+<span id="cb65-6"><a href="playing-game1-100times.html#cb65-6" aria-hidden="true" tabindex="-1"></a>number_games <span class="ot">=</span> <span class="dv">100</span></span>
+<span id="cb65-7"><a href="playing-game1-100times.html#cb65-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-8"><a href="playing-game1-100times.html#cb65-8" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize output matrix</span></span>
+<span id="cb65-9"><a href="playing-game1-100times.html#cb65-9" aria-hidden="true" tabindex="-1"></a>games <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> number_games, <span class="at">ncol =</span> <span class="dv">4</span>)</span>
+<span id="cb65-10"><a href="playing-game1-100times.html#cb65-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-11"><a href="playing-game1-100times.html#cb65-11" aria-hidden="true" tabindex="-1"></a><span class="co"># playing Game-A several times</span></span>
+<span id="cb65-12"><a href="playing-game1-100times.html#cb65-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (game <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>number_games) {</span>
+<span id="cb65-13"><a href="playing-game1-100times.html#cb65-13" aria-hidden="true" tabindex="-1"></a>  games[game, ] <span class="ot">=</span> <span class="fu">sample</span>(die, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb65-14"><a href="playing-game1-100times.html#cb65-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb65-15"><a href="playing-game1-100times.html#cb65-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-16"><a href="playing-game1-100times.html#cb65-16" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(games) <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">&quot;game&quot;</span>, <span class="dv">1</span><span class="sc">:</span>number_games)</span>
+<span id="cb65-17"><a href="playing-game1-100times.html#cb65-17" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(games) <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">&quot;roll&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span>
+<span id="cb65-18"><a href="playing-game1-100times.html#cb65-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-19"><a href="playing-game1-100times.html#cb65-19" aria-hidden="true" tabindex="-1"></a><span class="co"># determine each game&#39;s win-or-lose output</span></span>
+<span id="cb65-20"><a href="playing-game1-100times.html#cb65-20" aria-hidden="true" tabindex="-1"></a>wins <span class="ot">=</span> <span class="fu">apply</span>(</span>
+<span id="cb65-21"><a href="playing-game1-100times.html#cb65-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">X =</span> games, </span>
+<span id="cb65-22"><a href="playing-game1-100times.html#cb65-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">MARGIN =</span> <span class="dv">1</span>,</span>
+<span id="cb65-23"><a href="playing-game1-100times.html#cb65-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">FUN =</span> <span class="cf">function</span>(x) <span class="fu">any</span>(x <span class="sc">==</span> <span class="dv">6</span>))</span>
+<span id="cb65-24"><a href="playing-game1-100times.html#cb65-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-25"><a href="playing-game1-100times.html#cb65-25" aria-hidden="true" tabindex="-1"></a><span class="co"># total proportion of wins</span></span>
+<span id="cb65-26"><a href="playing-game1-100times.html#cb65-26" aria-hidden="true" tabindex="-1"></a>prop_wins <span class="ot">=</span> <span class="fu">sum</span>(wins) <span class="sc">/</span> number_games</span>
+<span id="cb65-27"><a href="playing-game1-100times.html#cb65-27" aria-hidden="true" tabindex="-1"></a>prop_wins</span></code></pre></div>
+<pre><code>## [1] 0.5</code></pre>
+<p>In this particular simulation of 100 games, we end up with a
+0.5 proportion of wins. In other words, 50 percent
+of the games are wins, and the other 50 percent of the
+games are losses.</p>
+<div id="computing-cumulative-gains" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Computing Cumulative Gains<a href="playing-game1-100times.html#computing-cumulative-gains" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To make things more interesting, let’s assume that you are paid $1 if you win
+a game, but also that you pay $1 if you lose a game. That is:</p>
+<ul>
+<li><p>gain <code>1</code> if you win a game</p></li>
+<li><p>gain <code>-1</code> if you lose a game</p></li>
+</ul>
+<p>This means that we need to create another object to store this “gains”
+information. This can be done in different ways. One option is to initialize
+a vector <code>gains</code> of length <code>number_games</code>, and set its elements to <code>-1</code>.
+Then use the logical vector <code>wins</code> to do logical subsetting and switch to <code>1</code>
+the elements matching the <code>TRUE</code> values in <code>wins</code>, like this:</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="playing-game1-100times.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># vector of gains</span></span>
+<span id="cb67-2"><a href="playing-game1-100times.html#cb67-2" aria-hidden="true" tabindex="-1"></a>gains <span class="ot">=</span> <span class="fu">rep</span>(<span class="sc">-</span><span class="dv">1</span>, number_games)  <span class="co"># initialize with all -1 elements</span></span>
+<span id="cb67-3"><a href="playing-game1-100times.html#cb67-3" aria-hidden="true" tabindex="-1"></a>gains[wins] <span class="ot">=</span> <span class="dv">1</span>                <span class="co"># switch to +1 for every win</span></span></code></pre></div>
+<p>The vector <code>gains</code> is a numeric vector containing as many <code>1</code>’s as wins, and
+as many <code>-1</code> as losses:</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="playing-game1-100times.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(wins)</span></code></pre></div>
+<pre><code>## wins
+## FALSE  TRUE 
+##    50    50</code></pre>
+<p>More interestingly, we can use <code>cumsum()</code> to obtain the cumulative addition of
+all elements in <code>wins</code>. The output vector, <code>cumulative_gains</code>, will contain
+the sequence of cumulative gains along the 100 games.</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="playing-game1-100times.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cumulative gains</span></span>
+<span id="cb70-2"><a href="playing-game1-100times.html#cb70-2" aria-hidden="true" tabindex="-1"></a>cumulative_gains <span class="ot">=</span> <span class="fu">cumsum</span>(gains)</span>
+<span id="cb70-3"><a href="playing-game1-100times.html#cb70-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-4"><a href="playing-game1-100times.html#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cumulative_gains, <span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##  [1]  1  2  1  0 -1 -2 -1 -2 -3 -4</code></pre>
+<p>As you can tell from this output, the first game is a win, as well as the
+second one. But then, we get a decreasing sequence with next four elements
+in <code>cumulative_gains</code>: <code>1 0 -1 -2</code>, indicating that games 3 to 6 are
+consecutive losses.</p>
+</div>
+<div id="plotting-cumulative-gains" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Plotting Cumulative Gains<a href="playing-game1-100times.html#plotting-cumulative-gains" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>It would be nice to visualize the sequence of wins and losses using the
+vector of cumulative gains <code>cumulative_gains</code>. So let’s see how to get some
+plots using base <code>"graphics"</code> functions, as well as <code>"ggplot2"</code> functions.</p>
+<div id="cumulative-gains-with-plot" class="section level3 hasAnchor" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> Cumulative Gains with <code>plot()</code><a href="playing-game1-100times.html#cumulative-gains-with-plot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Using traditional <code>"graphics"</code> functions, we can create a line graph with
+<code>plot()</code>. In the x-axis we pass a sequence vector of games; as for the y-axis
+we pass the <code>cumulative_gains</code> vector.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="playing-game1-100times.html#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span>number_games, cumulative_gains, <span class="at">type =</span> <span class="st">&#39;l&#39;</span>,</span>
+<span id="cb72-2"><a href="playing-game1-100times.html#cb72-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;games&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;cumulative gain&quot;</span>, <span class="at">las =</span> <span class="dv">1</span>,</span>
+<span id="cb72-3"><a href="playing-game1-100times.html#cb72-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">lwd =</span> <span class="fl">1.5</span>, <span class="at">col =</span> <span class="st">&quot;#318BEC&quot;</span>)</span>
+<span id="cb72-4"><a href="playing-game1-100times.html#cb72-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">&quot;gray70&quot;</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="R-rolling-dice_files/figure-html/unnamed-chunk-44-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<p>Observe where the blue line ends at game 100: exactly at a y-axis value of
+zero. Basically, in this series of 100 games, you didn’t gain any money,
+but you didn’t lose either.</p>
+</div>
+<div id="cum-gains-ggplot" class="section level3 hasAnchor" number="5.2.2">
+<h3><span class="header-section-number">5.2.2</span> Cumulative Gains with <code>ggplot2</code><a href="playing-game1-100times.html#cum-gains-ggplot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>What if you prefer to make a graphic with <code>"ggplot2"</code> functions instead of
+using the traditional base <code>plot()</code> approach? No problem, this is also
+possible.</p>
+<p>We are assuming that you have loaded the package <code>"tidyverse"</code>
+which contains <code>"ggplot2"</code>.</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="playing-game1-100times.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)   <span class="co"># which contains ggplot2</span></span></code></pre></div>
+<p>To make graphics with <code>ggplot()</code>, we first need to assemble the data to be
+plotted into a data frame. One way to create this table is as follows:</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="playing-game1-100times.html#cb74-1" aria-hidden="true" tabindex="-1"></a>tbl <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb74-2"><a href="playing-game1-100times.html#cb74-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">game =</span> <span class="dv">1</span><span class="sc">:</span>number_games,</span>
+<span id="cb74-3"><a href="playing-game1-100times.html#cb74-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">gain =</span> gains,</span>
+<span id="cb74-4"><a href="playing-game1-100times.html#cb74-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">cumulative_gain =</span> <span class="fu">cumsum</span>(gains)</span>
+<span id="cb74-5"><a href="playing-game1-100times.html#cb74-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb74-6"><a href="playing-game1-100times.html#cb74-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-7"><a href="playing-game1-100times.html#cb74-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tbl)</span></code></pre></div>
+<pre><code>##   game gain cumulative_gain
+## 1    1    1               1
+## 2    2    1               2
+## 3    3   -1               1
+## 4    4   -1               0
+## 5    5   -1              -1
+## 6    6   -1              -2</code></pre>
+<p>Having the appropriate data in a data frame object <code>tbl</code>, we can now proceed
+to make a line graph with the number game in the x-axis, and the cumulative
+gain in the y-axis.</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="playing-game1-100times.html#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> tbl, <span class="fu">aes</span>(<span class="at">x =</span> game, <span class="at">y =</span> cumulative_gain)) <span class="sc">+</span> </span>
+<span id="cb76-2"><a href="playing-game1-100times.html#cb76-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">&quot;gray70&quot;</span>) <span class="sc">+</span></span>
+<span id="cb76-3"><a href="playing-game1-100times.html#cb76-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">&quot;#318BEC&quot;</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb76-4"><a href="playing-game1-100times.html#cb76-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;games&quot;</span>, </span>
+<span id="cb76-5"><a href="playing-game1-100times.html#cb76-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;cumulative gain&quot;</span>, </span>
+<span id="cb76-6"><a href="playing-game1-100times.html#cb76-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Playing Game-A 100 times&quot;</span>,</span>
+<span id="cb76-7"><a href="playing-game1-100times.html#cb76-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Sequence of cumulative gains&quot;</span>) <span class="sc">+</span></span>
+<span id="cb76-8"><a href="playing-game1-100times.html#cb76-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="R-rolling-dice_files/figure-html/unnamed-chunk-47-1.png" width="80%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="animated-ggplot-graphic" class="section level3 hasAnchor" number="5.2.3">
+<h3><span class="header-section-number">5.2.3</span> Animated ggplot graphic<a href="playing-game1-100times.html#animated-ggplot-graphic" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For your amusement, it is also possible to make an animated <em>ggplot</em> graphic.
+This requires the companion package <code>"gganimate"</code></p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="playing-game1-100times.html#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gganimate)</span>
+<span id="cb77-2"><a href="playing-game1-100times.html#cb77-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-3"><a href="playing-game1-100times.html#cb77-3" aria-hidden="true" tabindex="-1"></a><span class="co"># gganimate may also need:</span></span>
+<span id="cb77-4"><a href="playing-game1-100times.html#cb77-4" aria-hidden="true" tabindex="-1"></a><span class="co"># library(gifski)   # for gif output</span></span>
+<span id="cb77-5"><a href="playing-game1-100times.html#cb77-5" aria-hidden="true" tabindex="-1"></a><span class="co"># library(av)       # for video output</span></span></code></pre></div>
+<p>For convenience purposes, it’s better if we assign the graphic to an object,
+e.g. <code>static_plot</code>, and then we add a <strong>transition layer</strong> with one of the
+<code>transition_()</code> functions. In this example we are going to use the
+<code>transition_reveal()</code> function, specifying <code>game</code> as the variable in the
+data <code>tbl</code> that needs to be taken into account to create the frames of the
+animation.</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="playing-game1-100times.html#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot object</span></span>
+<span id="cb78-2"><a href="playing-game1-100times.html#cb78-2" aria-hidden="true" tabindex="-1"></a>static_plot <span class="ot">=</span> <span class="fu">ggplot</span>(<span class="at">data =</span> tbl, <span class="fu">aes</span>(<span class="at">x =</span> game, <span class="at">y =</span> cumulative_gain)) <span class="sc">+</span> </span>
+<span id="cb78-3"><a href="playing-game1-100times.html#cb78-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">&quot;gray70&quot;</span>) <span class="sc">+</span></span>
+<span id="cb78-4"><a href="playing-game1-100times.html#cb78-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">&quot;#318BEC&quot;</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb78-5"><a href="playing-game1-100times.html#cb78-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;games&quot;</span>, </span>
+<span id="cb78-6"><a href="playing-game1-100times.html#cb78-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;cumulative gain&quot;</span>, </span>
+<span id="cb78-7"><a href="playing-game1-100times.html#cb78-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Playing Game-A 100 times&quot;</span>,</span>
+<span id="cb78-8"><a href="playing-game1-100times.html#cb78-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Sequence of cumulative gains&quot;</span>) <span class="sc">+</span></span>
+<span id="cb78-9"><a href="playing-game1-100times.html#cb78-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb78-10"><a href="playing-game1-100times.html#cb78-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-11"><a href="playing-game1-100times.html#cb78-11" aria-hidden="true" tabindex="-1"></a><span class="co"># animation</span></span>
+<span id="cb78-12"><a href="playing-game1-100times.html#cb78-12" aria-hidden="true" tabindex="-1"></a>animated_plot <span class="ot">=</span> static_plot <span class="sc">+</span></span>
+<span id="cb78-13"><a href="playing-game1-100times.html#cb78-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transition_reveal</span>(game)</span>
+<span id="cb78-14"><a href="playing-game1-100times.html#cb78-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-15"><a href="playing-game1-100times.html#cb78-15" aria-hidden="true" tabindex="-1"></a><span class="fu">animate</span>(animated_plot)</span></code></pre></div>
+<p><img src="images/playing-100games.gif" width="80%" style="display: block; margin: auto;" /></p>
+<p>To save the animated plot into a <em>gif</em> file, you use <code>anim_save()</code>, for
+example:</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="playing-game1-100times.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save gif in working directory</span></span>
+<span id="cb79-2"><a href="playing-game1-100times.html#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anim_save</span>(</span>
+<span id="cb79-3"><a href="playing-game1-100times.html#cb79-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">&quot;Playing-Game-A-100-times.gif&quot;</span>, </span>
+<span id="cb79-4"><a href="playing-game1-100times.html#cb79-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">animation =</span> animated_plot,</span>
+<span id="cb79-5"><a href="playing-game1-100times.html#cb79-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">5</span>, </span>
+<span id="cb79-6"><a href="playing-game1-100times.html#cb79-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">7</span>, </span>
+<span id="cb79-7"><a href="playing-game1-100times.html#cb79-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">units =</span> <span class="st">&quot;in&quot;</span>,</span>
+<span id="cb79-8"><a href="playing-game1-100times.html#cb79-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">res =</span> <span class="dv">200</span>)</span></code></pre></div>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="vectorized-loops-with-apply.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="running-various-simulations.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["R-rolling-dice.pdf", "R-rolling-dice.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

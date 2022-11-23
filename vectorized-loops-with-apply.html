@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Vectorized loops with apply() | Rolling Dice with R</title>
+  <meta name="description" content="<p>This tutorial describes a couple of examples for implementing simulations
+of games of chance in R.</p>" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Vectorized loops with apply() | Rolling Dice with R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="https://www.gastonsanchez.com/R-rolling-dice/images/demere-cover.png" />
+  <meta property="og:description" content="<p>This tutorial describes a couple of examples for implementing simulations
+of games of chance in R.</p>" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Vectorized loops with apply() | Rolling Dice with R" />
+  
+  <meta name="twitter:description" content="<p>This tutorial describes a couple of examples for implementing simulations
+of games of chance in R.</p>" />
+  <meta name="twitter:image" content="https://www.gastonsanchez.com/R-rolling-dice/images/demere-cover.png" />
+
+<meta name="author" content="Gaston Sanchez" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="playing-game-a-a-few-times.html"/>
+<link rel="next" href="playing-game1-100times.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"><b>Rolling Dice with R</b><br><small>Gaston Sanchez</small></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#my-series-of-r-tutorials"><i class="fa fa-check"></i>My Series of R Tutorials</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#donation"><i class="fa fa-check"></i>Donation</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#description-of-game-a"><i class="fa fa-check"></i><b>1.1</b> Description of Game-A</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#probability-of-winning-game-a"><i class="fa fa-check"></i><b>1.2</b> Probability of winning Game-A</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="introduction.html"><a href="introduction.html#no-six-in-four-rolls"><i class="fa fa-check"></i><b>1.2.1</b> No six in four rolls</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="coding-game-a.html"><a href="coding-game-a.html"><i class="fa fa-check"></i><b>2</b> Coding Game-A</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="coding-game-a.html"><a href="coding-game-a.html#rolling-one-die"><i class="fa fa-check"></i><b>2.1</b> Rolling one die</a></li>
+<li class="chapter" data-level="2.2" data-path="coding-game-a.html"><a href="coding-game-a.html#rolling-dice-with-sample"><i class="fa fa-check"></i><b>2.2</b> Rolling dice with <code>sample()</code></a></li>
+<li class="chapter" data-level="2.3" data-path="coding-game-a.html"><a href="coding-game-a.html#rolling-four-dice"><i class="fa fa-check"></i><b>2.3</b> Rolling four dice</a></li>
+<li class="chapter" data-level="2.4" data-path="coding-game-a.html"><a href="coding-game-a.html#playing-game-a-once"><i class="fa fa-check"></i><b>2.4</b> Playing Game-A once</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="playing-game-a-a-few-times.html"><a href="playing-game-a-a-few-times.html"><i class="fa fa-check"></i><b>3</b> Playing Game-A a Few Times</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="playing-game-a-a-few-times.html"><a href="playing-game-a-a-few-times.html#playing-game-a-five-times"><i class="fa fa-check"></i><b>3.1</b> Playing Game-A Five Times</a></li>
+<li class="chapter" data-level="3.2" data-path="playing-game-a-a-few-times.html"><a href="playing-game-a-a-few-times.html#using-a-for-loop"><i class="fa fa-check"></i><b>3.2</b> Using a <code>for()</code> loop</a></li>
+<li class="chapter" data-level="3.3" data-path="playing-game-a-a-few-times.html"><a href="playing-game-a-a-few-times.html#playing-game-a-10-times"><i class="fa fa-check"></i><b>3.3</b> Playing Game-A 10 times</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="vectorized-loops-with-apply.html"><a href="vectorized-loops-with-apply.html"><i class="fa fa-check"></i><b>4</b> Vectorized loops with <code>apply()</code></a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="vectorized-loops-with-apply.html"><a href="vectorized-loops-with-apply.html#function-apply"><i class="fa fa-check"></i><b>4.1</b> Function <code>apply()</code></a></li>
+<li class="chapter" data-level="4.2" data-path="vectorized-loops-with-apply.html"><a href="vectorized-loops-with-apply.html#anonymous-functions-and-apply"><i class="fa fa-check"></i><b>4.2</b> Anonymous functions and <code>apply()</code></a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="vectorized-loops-with-apply.html"><a href="vectorized-loops-with-apply.html#number-of-wins-with-apply"><i class="fa fa-check"></i><b>4.2.1</b> Number of wins with <code>apply()</code></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="playing-game1-100times.html"><a href="playing-game1-100times.html"><i class="fa fa-check"></i><b>5</b> Playing Game-A 100 times</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="playing-game1-100times.html"><a href="playing-game1-100times.html#computing-cumulative-gains"><i class="fa fa-check"></i><b>5.1</b> Computing Cumulative Gains</a></li>
+<li class="chapter" data-level="5.2" data-path="playing-game1-100times.html"><a href="playing-game1-100times.html#plotting-cumulative-gains"><i class="fa fa-check"></i><b>5.2</b> Plotting Cumulative Gains</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="playing-game1-100times.html"><a href="playing-game1-100times.html#cumulative-gains-with-plot"><i class="fa fa-check"></i><b>5.2.1</b> Cumulative Gains with <code>plot()</code></a></li>
+<li class="chapter" data-level="5.2.2" data-path="playing-game1-100times.html"><a href="playing-game1-100times.html#cum-gains-ggplot"><i class="fa fa-check"></i><b>5.2.2</b> Cumulative Gains with <code>ggplot2</code></a></li>
+<li class="chapter" data-level="5.2.3" data-path="playing-game1-100times.html"><a href="playing-game1-100times.html#animated-ggplot-graphic"><i class="fa fa-check"></i><b>5.2.3</b> Animated ggplot graphic</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="running-various-simulations.html"><a href="running-various-simulations.html"><i class="fa fa-check"></i><b>6</b> Running Various Simulations</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="running-various-simulations.html"><a href="running-various-simulations.html#embedded-for-loops"><i class="fa fa-check"></i><b>6.1</b> Embedded <code>for()</code> loops</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="running-even-more-simulations.html"><a href="running-even-more-simulations.html"><i class="fa fa-check"></i><b>7</b> Running Even More Simulations</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="running-even-more-simulations.html"><a href="running-even-more-simulations.html#graphing-cumulative-gains"><i class="fa fa-check"></i><b>7.1</b> Graphing Cumulative Gains</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="running-even-more-simulations.html"><a href="running-even-more-simulations.html#plotting-the-first-simulation"><i class="fa fa-check"></i><b>7.1.1</b> Plotting the first simulation</a></li>
+<li class="chapter" data-level="7.1.2" data-path="running-even-more-simulations.html"><a href="running-even-more-simulations.html#plotting-the-first-four-simulations"><i class="fa fa-check"></i><b>7.1.2</b> Plotting the first four simulations</a></li>
+<li class="chapter" data-level="7.1.3" data-path="running-even-more-simulations.html"><a href="running-even-more-simulations.html#plotting-all-simulations"><i class="fa fa-check"></i><b>7.1.3</b> Plotting all simulations</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://www.gastonsanchez.com" target="_blank">gastonsanchez.com</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Rolling Dice with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="vectorized-loops-with-apply" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> Vectorized loops with <code>apply()</code><a href="vectorized-loops-with-apply.html#vectorized-loops-with-apply" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>We finished the last chapter writing code that simulates playing Game-A 10 times.
+For recap purposes, the implemented code is displayed below:</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="vectorized-loops-with-apply.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">133</span>)</span>
+<span id="cb46-2"><a href="vectorized-loops-with-apply.html#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="vectorized-loops-with-apply.html#cb46-3" aria-hidden="true" tabindex="-1"></a>die <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span></span>
+<span id="cb46-4"><a href="vectorized-loops-with-apply.html#cb46-4" aria-hidden="true" tabindex="-1"></a>number_games <span class="ot">=</span> <span class="dv">10</span></span>
+<span id="cb46-5"><a href="vectorized-loops-with-apply.html#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-6"><a href="vectorized-loops-with-apply.html#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize output matrix (to be populated in for-loop)</span></span>
+<span id="cb46-7"><a href="vectorized-loops-with-apply.html#cb46-7" aria-hidden="true" tabindex="-1"></a>games <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> number_games, <span class="at">ncol =</span> <span class="dv">4</span>)</span>
+<span id="cb46-8"><a href="vectorized-loops-with-apply.html#cb46-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-9"><a href="vectorized-loops-with-apply.html#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (game <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>number_games) {</span>
+<span id="cb46-10"><a href="vectorized-loops-with-apply.html#cb46-10" aria-hidden="true" tabindex="-1"></a>  games[game, ] <span class="ot">=</span> <span class="fu">sample</span>(die, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb46-11"><a href="vectorized-loops-with-apply.html#cb46-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb46-12"><a href="vectorized-loops-with-apply.html#cb46-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-13"><a href="vectorized-loops-with-apply.html#cb46-13" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(games) <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">&quot;game&quot;</span>, <span class="dv">1</span><span class="sc">:</span>number_games)</span>
+<span id="cb46-14"><a href="vectorized-loops-with-apply.html#cb46-14" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(games) <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">&quot;roll&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span>
+<span id="cb46-15"><a href="vectorized-loops-with-apply.html#cb46-15" aria-hidden="true" tabindex="-1"></a>games</span></code></pre></div>
+<p>The punchline of this piece of code has to do with the <code>for()</code> loop, storing
+the outputs of each game in the corresponding row of the <code>games</code> matrix.</p>
+<p>Additionally, we also wrote a second <code>for()</code> loop to determine whether each
+game—each row in <code>games</code>—had at least one six; this was done with the
+<code>any()</code> function, and it’s depicted in the following diagram:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-29"></span>
+<img src="images/demere-10-games-any.png" alt="Diagram depicting the application of any() to all the rows of matrix games." width="90%" />
+<p class="caption">
+Figure 4.1: Diagram depicting the application of any() to all the rows of matrix games.
+</p>
+</div>
+<div id="function-apply" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Function <code>apply()</code><a href="vectorized-loops-with-apply.html#function-apply" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Instead of writing a loop to see which games are wins, and which games are
+losses, we can take advantage of a very interesting function called <code>apply()</code>,
+which R users refer to as a <em>vectorized loop</em> function.</p>
+<p>As the name indicates, <code>apply()</code> lets you <strong>apply</strong> a function to the elements
+of a matrix. The elements of a matrix can be:</p>
+<ul>
+<li><p>its rows: <code>MARGIN = 1</code></p></li>
+<li><p>its columns: <code>MARGIN = 2</code></p></li>
+<li><p>both (rows &amp; cols): <code>MARGIN = c(1, 2)</code></p></li>
+</ul>
+<p>For example, say you want to get the <code>sum()</code> of all the elements in each
+row of <code>games</code>:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="vectorized-loops-with-apply.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># row sum</span></span>
+<span id="cb47-2"><a href="vectorized-loops-with-apply.html#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(<span class="at">X =</span> games, <span class="at">MARGIN =</span> <span class="dv">1</span>, <span class="at">FUN =</span> sum)</span></code></pre></div>
+<pre><code>##  game1  game2  game3  game4  game5  game6  game7  game8  game9 game10 
+##     12     13     16     15      7     13     13      8     10     17</code></pre>
+<p>We pass three inputs to <code>apply()</code>. The first ingredient is the input matrix,
+the second ingredient specifies the <code>MARGIN</code> value, and the third ingredient
+<code>FUN</code> is the function to be applied. <code>MARGIN = 1</code> means that the function <code>FUN</code>
+is applied row-by-row.</p>
+<p>Here’s another example. Say you want to obtain the product of all the elements
+in each column of <code>games</code>. This requires specifying <code>MARGIN = 2</code> and <code>FUN = prod</code>:</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="vectorized-loops-with-apply.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># column product</span></span>
+<span id="cb49-2"><a href="vectorized-loops-with-apply.html#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(<span class="at">X =</span> games, <span class="at">MARGIN =</span> <span class="dv">2</span>, <span class="at">FUN =</span> prod)</span></code></pre></div>
+<pre><code>## roll1 roll2 roll3 roll4 
+## 38400 19440  5760   720</code></pre>
+<p>Or what if you want to get the minimum in each row of <code>games</code>:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="vectorized-loops-with-apply.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># row minimum</span></span>
+<span id="cb51-2"><a href="vectorized-loops-with-apply.html#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(<span class="at">X =</span> games, <span class="at">MARGIN =</span> <span class="dv">1</span>, <span class="at">FUN =</span> min)</span></code></pre></div>
+<pre><code>##  game1  game2  game3  game4  game5  game6  game7  game8  game9 game10 
+##      1      1      2      1      1      2      1      1      1      1</code></pre>
+</div>
+<div id="anonymous-functions-and-apply" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Anonymous functions and <code>apply()</code><a href="vectorized-loops-with-apply.html#anonymous-functions-and-apply" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Sometimes, there is no built-in function to be used for the argument <code>FUN</code>.
+For instance, say you want to obtain the <strong>range</strong> of each row, that is, the
+maximum minus the minimum. R has a <code>range()</code> function but it does not return a
+single value, it just gives you the <code>min()</code> and the <code>max()</code> of an input vector:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="vectorized-loops-with-apply.html#cb53-1" aria-hidden="true" tabindex="-1"></a>game_1 <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">1</span>)</span>
+<span id="cb53-2"><a href="vectorized-loops-with-apply.html#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(game_1)</span></code></pre></div>
+<pre><code>## [1] 1 6</code></pre>
+<p>If you want the range, you need to compute the <code>max()</code> minus the <code>min()</code></p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="vectorized-loops-with-apply.html#cb55-1" aria-hidden="true" tabindex="-1"></a>game_1 <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">1</span>)</span>
+<span id="cb55-2"><a href="vectorized-loops-with-apply.html#cb55-2" aria-hidden="true" tabindex="-1"></a>range_1 <span class="ot">=</span> <span class="fu">max</span>(game_1) <span class="sc">-</span> <span class="fu">min</span>(game_1)</span>
+<span id="cb55-3"><a href="vectorized-loops-with-apply.html#cb55-3" aria-hidden="true" tabindex="-1"></a>range_1</span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<p>Because R does not have a built-in function that returns the range, we need
+to provide this function to the <code>FUN</code> argument of <code>apply()</code>. When the function
+to be provided is fairly simple, we can create an <strong>anonymous function</strong>
+inside <code>apply()</code>, here’s how we do it:</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="vectorized-loops-with-apply.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># row ranges (with anonymous function)</span></span>
+<span id="cb57-2"><a href="vectorized-loops-with-apply.html#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(</span>
+<span id="cb57-3"><a href="vectorized-loops-with-apply.html#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">X =</span> games, </span>
+<span id="cb57-4"><a href="vectorized-loops-with-apply.html#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">MARGIN =</span> <span class="dv">1</span>, </span>
+<span id="cb57-5"><a href="vectorized-loops-with-apply.html#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">FUN =</span> <span class="cf">function</span>(x) <span class="fu">max</span>(x) <span class="sc">-</span> <span class="fu">min</span>(x))</span></code></pre></div>
+<pre><code>##  game1  game2  game3  game4  game5  game6  game7  game8  game9 game10 
+##      5      5      3      5      3      2      5      3      5      5</code></pre>
+<p>The reason why the provided function to the argument <code>FUN</code> is called an anonymous
+function is because the created function has no name.</p>
+<p>An alternative option is to first create a function outside <code>apply()</code>, and
+then pass this function like any other function. This alternative is often
+preferred when the body of the function to be passed to <code>apply()</code> involves
+several lines of code.</p>
+<p>For example, in the following code chunk we create a function <code>vector_range()</code>—that
+computes the statistical range—and then we pass this function to <code>apply()</code> in
+order to get the range in each row of the matrix <code>games</code>:</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="vectorized-loops-with-apply.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># auxiliary function to compute range</span></span>
+<span id="cb59-2"><a href="vectorized-loops-with-apply.html#cb59-2" aria-hidden="true" tabindex="-1"></a>vector_range <span class="ot">=</span> <span class="cf">function</span>(x) {</span>
+<span id="cb59-3"><a href="vectorized-loops-with-apply.html#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">max</span>(x) <span class="sc">-</span> <span class="fu">min</span>(x)</span>
+<span id="cb59-4"><a href="vectorized-loops-with-apply.html#cb59-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb59-5"><a href="vectorized-loops-with-apply.html#cb59-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-6"><a href="vectorized-loops-with-apply.html#cb59-6" aria-hidden="true" tabindex="-1"></a><span class="co"># row ranges</span></span>
+<span id="cb59-7"><a href="vectorized-loops-with-apply.html#cb59-7" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(</span>
+<span id="cb59-8"><a href="vectorized-loops-with-apply.html#cb59-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">X =</span> games, </span>
+<span id="cb59-9"><a href="vectorized-loops-with-apply.html#cb59-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">MARGIN =</span> <span class="dv">1</span>, </span>
+<span id="cb59-10"><a href="vectorized-loops-with-apply.html#cb59-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">FUN =</span> vector_range)</span></code></pre></div>
+<pre><code>##  game1  game2  game3  game4  game5  game6  game7  game8  game9 game10 
+##      5      5      3      5      3      2      5      3      5      5</code></pre>
+<div id="number-of-wins-with-apply" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Number of wins with <code>apply()</code><a href="vectorized-loops-with-apply.html#number-of-wins-with-apply" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let’s go back to the task of finding which games are wins.
+Because there’s no default function that computes if <code>any()</code> element of a
+vector is equal to six, we need to create an <em>anonymous</em> function for the
+<code>FUN</code> argument:</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="vectorized-loops-with-apply.html#cb61-1" aria-hidden="true" tabindex="-1"></a>wins <span class="ot">=</span> <span class="fu">apply</span>(</span>
+<span id="cb61-2"><a href="vectorized-loops-with-apply.html#cb61-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">X =</span> games, </span>
+<span id="cb61-3"><a href="vectorized-loops-with-apply.html#cb61-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">MARGIN =</span> <span class="dv">1</span>,</span>
+<span id="cb61-4"><a href="vectorized-loops-with-apply.html#cb61-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">FUN =</span> <span class="cf">function</span>(x) <span class="fu">any</span>(x <span class="sc">==</span> <span class="dv">6</span>))</span>
+<span id="cb61-5"><a href="vectorized-loops-with-apply.html#cb61-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-6"><a href="vectorized-loops-with-apply.html#cb61-6" aria-hidden="true" tabindex="-1"></a>wins</span></code></pre></div>
+<pre><code>##  game1  game2  game3  game4  game5  game6  game7  game8  game9 game10 
+##   TRUE   TRUE  FALSE   TRUE  FALSE  FALSE   TRUE  FALSE   TRUE   TRUE</code></pre>
+<p>We can now compute the proportion of wins:</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="vectorized-loops-with-apply.html#cb63-1" aria-hidden="true" tabindex="-1"></a>prop_wins <span class="ot">=</span> <span class="fu">sum</span>(wins) <span class="sc">/</span> number_games</span>
+<span id="cb63-2"><a href="vectorized-loops-with-apply.html#cb63-2" aria-hidden="true" tabindex="-1"></a>prop_wins</span></code></pre></div>
+<pre><code>## [1] 0.6</code></pre>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="playing-game-a-a-few-times.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="playing-game1-100times.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["R-rolling-dice.pdf", "R-rolling-dice.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

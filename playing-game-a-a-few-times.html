@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 Playing Game-A a Few Times | Rolling Dice with R</title>
+  <meta name="description" content="<p>This tutorial describes a couple of examples for implementing simulations
+of games of chance in R.</p>" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 Playing Game-A a Few Times | Rolling Dice with R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="https://www.gastonsanchez.com/R-rolling-dice/images/demere-cover.png" />
+  <meta property="og:description" content="<p>This tutorial describes a couple of examples for implementing simulations
+of games of chance in R.</p>" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 Playing Game-A a Few Times | Rolling Dice with R" />
+  
+  <meta name="twitter:description" content="<p>This tutorial describes a couple of examples for implementing simulations
+of games of chance in R.</p>" />
+  <meta name="twitter:image" content="https://www.gastonsanchez.com/R-rolling-dice/images/demere-cover.png" />
+
+<meta name="author" content="Gaston Sanchez" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="coding-game-a.html"/>
+<link rel="next" href="vectorized-loops-with-apply.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"><b>Rolling Dice with R</b><br><small>Gaston Sanchez</small></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#my-series-of-r-tutorials"><i class="fa fa-check"></i>My Series of R Tutorials</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#donation"><i class="fa fa-check"></i>Donation</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#description-of-game-a"><i class="fa fa-check"></i><b>1.1</b> Description of Game-A</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#probability-of-winning-game-a"><i class="fa fa-check"></i><b>1.2</b> Probability of winning Game-A</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="introduction.html"><a href="introduction.html#no-six-in-four-rolls"><i class="fa fa-check"></i><b>1.2.1</b> No six in four rolls</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="coding-game-a.html"><a href="coding-game-a.html"><i class="fa fa-check"></i><b>2</b> Coding Game-A</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="coding-game-a.html"><a href="coding-game-a.html#rolling-one-die"><i class="fa fa-check"></i><b>2.1</b> Rolling one die</a></li>
+<li class="chapter" data-level="2.2" data-path="coding-game-a.html"><a href="coding-game-a.html#rolling-dice-with-sample"><i class="fa fa-check"></i><b>2.2</b> Rolling dice with <code>sample()</code></a></li>
+<li class="chapter" data-level="2.3" data-path="coding-game-a.html"><a href="coding-game-a.html#rolling-four-dice"><i class="fa fa-check"></i><b>2.3</b> Rolling four dice</a></li>
+<li class="chapter" data-level="2.4" data-path="coding-game-a.html"><a href="coding-game-a.html#playing-game-a-once"><i class="fa fa-check"></i><b>2.4</b> Playing Game-A once</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="playing-game-a-a-few-times.html"><a href="playing-game-a-a-few-times.html"><i class="fa fa-check"></i><b>3</b> Playing Game-A a Few Times</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="playing-game-a-a-few-times.html"><a href="playing-game-a-a-few-times.html#playing-game-a-five-times"><i class="fa fa-check"></i><b>3.1</b> Playing Game-A Five Times</a></li>
+<li class="chapter" data-level="3.2" data-path="playing-game-a-a-few-times.html"><a href="playing-game-a-a-few-times.html#using-a-for-loop"><i class="fa fa-check"></i><b>3.2</b> Using a <code>for()</code> loop</a></li>
+<li class="chapter" data-level="3.3" data-path="playing-game-a-a-few-times.html"><a href="playing-game-a-a-few-times.html#playing-game-a-10-times"><i class="fa fa-check"></i><b>3.3</b> Playing Game-A 10 times</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="vectorized-loops-with-apply.html"><a href="vectorized-loops-with-apply.html"><i class="fa fa-check"></i><b>4</b> Vectorized loops with <code>apply()</code></a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="vectorized-loops-with-apply.html"><a href="vectorized-loops-with-apply.html#function-apply"><i class="fa fa-check"></i><b>4.1</b> Function <code>apply()</code></a></li>
+<li class="chapter" data-level="4.2" data-path="vectorized-loops-with-apply.html"><a href="vectorized-loops-with-apply.html#anonymous-functions-and-apply"><i class="fa fa-check"></i><b>4.2</b> Anonymous functions and <code>apply()</code></a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="vectorized-loops-with-apply.html"><a href="vectorized-loops-with-apply.html#number-of-wins-with-apply"><i class="fa fa-check"></i><b>4.2.1</b> Number of wins with <code>apply()</code></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="playing-game1-100times.html"><a href="playing-game1-100times.html"><i class="fa fa-check"></i><b>5</b> Playing Game-A 100 times</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="playing-game1-100times.html"><a href="playing-game1-100times.html#computing-cumulative-gains"><i class="fa fa-check"></i><b>5.1</b> Computing Cumulative Gains</a></li>
+<li class="chapter" data-level="5.2" data-path="playing-game1-100times.html"><a href="playing-game1-100times.html#plotting-cumulative-gains"><i class="fa fa-check"></i><b>5.2</b> Plotting Cumulative Gains</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="playing-game1-100times.html"><a href="playing-game1-100times.html#cumulative-gains-with-plot"><i class="fa fa-check"></i><b>5.2.1</b> Cumulative Gains with <code>plot()</code></a></li>
+<li class="chapter" data-level="5.2.2" data-path="playing-game1-100times.html"><a href="playing-game1-100times.html#cum-gains-ggplot"><i class="fa fa-check"></i><b>5.2.2</b> Cumulative Gains with <code>ggplot2</code></a></li>
+<li class="chapter" data-level="5.2.3" data-path="playing-game1-100times.html"><a href="playing-game1-100times.html#animated-ggplot-graphic"><i class="fa fa-check"></i><b>5.2.3</b> Animated ggplot graphic</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="running-various-simulations.html"><a href="running-various-simulations.html"><i class="fa fa-check"></i><b>6</b> Running Various Simulations</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="running-various-simulations.html"><a href="running-various-simulations.html#embedded-for-loops"><i class="fa fa-check"></i><b>6.1</b> Embedded <code>for()</code> loops</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="running-even-more-simulations.html"><a href="running-even-more-simulations.html"><i class="fa fa-check"></i><b>7</b> Running Even More Simulations</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="running-even-more-simulations.html"><a href="running-even-more-simulations.html#graphing-cumulative-gains"><i class="fa fa-check"></i><b>7.1</b> Graphing Cumulative Gains</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="running-even-more-simulations.html"><a href="running-even-more-simulations.html#plotting-the-first-simulation"><i class="fa fa-check"></i><b>7.1.1</b> Plotting the first simulation</a></li>
+<li class="chapter" data-level="7.1.2" data-path="running-even-more-simulations.html"><a href="running-even-more-simulations.html#plotting-the-first-four-simulations"><i class="fa fa-check"></i><b>7.1.2</b> Plotting the first four simulations</a></li>
+<li class="chapter" data-level="7.1.3" data-path="running-even-more-simulations.html"><a href="running-even-more-simulations.html#plotting-all-simulations"><i class="fa fa-check"></i><b>7.1.3</b> Plotting all simulations</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://www.gastonsanchez.com" target="_blank">gastonsanchez.com</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Rolling Dice with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="playing-game-a-a-few-times" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> Playing Game-A a Few Times<a href="playing-game-a-a-few-times.html#playing-game-a-a-few-times" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>By now you know that Game-A involves rolling a (fair) die four times, and
+you win if you get at least one six.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-19"></span>
+<img src="images/rolling-four-dice.jpg" alt="Rolling 4 dice in Game version A" width="25%" />
+<p class="caption">
+Figure 3.1: Rolling 4 dice in Game version A
+</p>
+</div>
+<p>You’ve also learned that we can write some code to play this game once,
+determining the winning status:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="playing-game-a-a-few-times.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># playing Game-A once</span></span>
+<span id="cb34-2"><a href="playing-game-a-a-few-times.html#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20</span>)</span>
+<span id="cb34-3"><a href="playing-game-a-a-few-times.html#cb34-3" aria-hidden="true" tabindex="-1"></a>die <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span></span>
+<span id="cb34-4"><a href="playing-game-a-a-few-times.html#cb34-4" aria-hidden="true" tabindex="-1"></a>four_rolls <span class="ot">=</span> <span class="fu">sample</span>(die, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb34-5"><a href="playing-game-a-a-few-times.html#cb34-5" aria-hidden="true" tabindex="-1"></a>win <span class="ot">=</span> <span class="fu">any</span>(four_rolls)</span>
+<span id="cb34-6"><a href="playing-game-a-a-few-times.html#cb34-6" aria-hidden="true" tabindex="-1"></a>win</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div id="playing-game-a-five-times" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Playing Game-A Five Times<a href="playing-game-a-a-few-times.html#playing-game-a-five-times" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We are ready to write code and use it to play Game-A five times</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="playing-game-a-a-few-times.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">133</span>)</span>
+<span id="cb36-2"><a href="playing-game-a-a-few-times.html#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="playing-game-a-a-few-times.html#cb36-3" aria-hidden="true" tabindex="-1"></a>die <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span></span>
+<span id="cb36-4"><a href="playing-game-a-a-few-times.html#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="playing-game-a-a-few-times.html#cb36-5" aria-hidden="true" tabindex="-1"></a>game_1 <span class="ot">=</span> <span class="fu">sample</span>(die, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb36-6"><a href="playing-game-a-a-few-times.html#cb36-6" aria-hidden="true" tabindex="-1"></a>game_2 <span class="ot">=</span> <span class="fu">sample</span>(die, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb36-7"><a href="playing-game-a-a-few-times.html#cb36-7" aria-hidden="true" tabindex="-1"></a>game_3 <span class="ot">=</span> <span class="fu">sample</span>(die, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb36-8"><a href="playing-game-a-a-few-times.html#cb36-8" aria-hidden="true" tabindex="-1"></a>game_4 <span class="ot">=</span> <span class="fu">sample</span>(die, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb36-9"><a href="playing-game-a-a-few-times.html#cb36-9" aria-hidden="true" tabindex="-1"></a>game_5 <span class="ot">=</span> <span class="fu">sample</span>(die, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb36-10"><a href="playing-game-a-a-few-times.html#cb36-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-11"><a href="playing-game-a-a-few-times.html#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="co"># win (or lose)?</span></span>
+<span id="cb36-12"><a href="playing-game-a-a-few-times.html#cb36-12" aria-hidden="true" tabindex="-1"></a>wins <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb36-13"><a href="playing-game-a-a-few-times.html#cb36-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;game_1&quot;</span> <span class="ot">=</span> <span class="fu">any</span>(game_1 <span class="sc">==</span> <span class="dv">6</span>),</span>
+<span id="cb36-14"><a href="playing-game-a-a-few-times.html#cb36-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;game_2&quot;</span> <span class="ot">=</span> <span class="fu">any</span>(game_2 <span class="sc">==</span> <span class="dv">6</span>),</span>
+<span id="cb36-15"><a href="playing-game-a-a-few-times.html#cb36-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;game_3&quot;</span> <span class="ot">=</span> <span class="fu">any</span>(game_3 <span class="sc">==</span> <span class="dv">6</span>),</span>
+<span id="cb36-16"><a href="playing-game-a-a-few-times.html#cb36-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;game_4&quot;</span> <span class="ot">=</span> <span class="fu">any</span>(game_4 <span class="sc">==</span> <span class="dv">6</span>),</span>
+<span id="cb36-17"><a href="playing-game-a-a-few-times.html#cb36-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;game_5&quot;</span> <span class="ot">=</span> <span class="fu">any</span>(game_5 <span class="sc">==</span> <span class="dv">6</span>))</span>
+<span id="cb36-18"><a href="playing-game-a-a-few-times.html#cb36-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb36-19"><a href="playing-game-a-a-few-times.html#cb36-19" aria-hidden="true" tabindex="-1"></a><span class="co"># number of wins</span></span>
+<span id="cb36-20"><a href="playing-game-a-a-few-times.html#cb36-20" aria-hidden="true" tabindex="-1"></a>total_wins <span class="ot">=</span> <span class="fu">sum</span>(wins)</span>
+<span id="cb36-21"><a href="playing-game-a-a-few-times.html#cb36-21" aria-hidden="true" tabindex="-1"></a>total_wins</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="playing-game-a-a-few-times.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># proportion of wins</span></span>
+<span id="cb38-2"><a href="playing-game-a-a-few-times.html#cb38-2" aria-hidden="true" tabindex="-1"></a>prop_wins <span class="ot">=</span> <span class="fu">sum</span>(wins) <span class="sc">/</span> <span class="dv">5</span></span>
+<span id="cb38-3"><a href="playing-game-a-a-few-times.html#cb38-3" aria-hidden="true" tabindex="-1"></a>prop_wins</span></code></pre></div>
+<pre><code>## [1] 0.6</code></pre>
+<p>As you can tell, the above code works, but there is a substantial amount of
+unnecessary repetition. Imagine copying-pasting the <code>sample()</code> command
+if we wanted to play Game-A 50 times, or 100 times, or 1000 times.</p>
+</div>
+<div id="using-a-for-loop" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Using a <code>for()</code> loop<a href="playing-game-a-a-few-times.html#using-a-for-loop" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The above code generates the five following five games (each game with 4 rolls)</p>
+<p><img src="images/demere-5-games.png" width="40%" style="display: block; margin: auto;" /></p>
+<p>To avoid repeating the same commands multiple times, we can take advantage of
+loops, for example with a <code>for()</code> loop.</p>
+<p>Instead of using individual vectors <code>game_1</code>, <code>game_2</code>, etc, we are going to
+use a matrix to store the rolls of all games. One option for this matrix is to
+initialize it in a way that rows correspond to games, while columns correspond
+to rolls:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-23"></span>
+<img src="images/demere-5-games-matrix.png" alt="Structure of output matrix with 5 rows and 4 columns." width="40%" />
+<p class="caption">
+Figure 3.2: Structure of output matrix with 5 rows and 4 columns.
+</p>
+</div>
+<p>The idea is to have an iterative process in which each iteration is associated
+to a game. In other words, at each iteration we play a single game, and we
+store the output of the rolls in the associated row of the matrix. Here’s how.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="playing-game-a-a-few-times.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">133</span>)</span>
+<span id="cb40-2"><a href="playing-game-a-a-few-times.html#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="playing-game-a-a-few-times.html#cb40-3" aria-hidden="true" tabindex="-1"></a>die <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span></span>
+<span id="cb40-4"><a href="playing-game-a-a-few-times.html#cb40-4" aria-hidden="true" tabindex="-1"></a>number_games <span class="ot">=</span> <span class="dv">5</span></span>
+<span id="cb40-5"><a href="playing-game-a-a-few-times.html#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="playing-game-a-a-few-times.html#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize output matrix (full of zeros)</span></span>
+<span id="cb40-7"><a href="playing-game-a-a-few-times.html#cb40-7" aria-hidden="true" tabindex="-1"></a>games <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> number_games, <span class="at">ncol =</span> <span class="dv">4</span>)</span>
+<span id="cb40-8"><a href="playing-game-a-a-few-times.html#cb40-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-9"><a href="playing-game-a-a-few-times.html#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="co"># each iteration corresponds to a single game</span></span>
+<span id="cb40-10"><a href="playing-game-a-a-few-times.html#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (game <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>number_games) {</span>
+<span id="cb40-11"><a href="playing-game-a-a-few-times.html#cb40-11" aria-hidden="true" tabindex="-1"></a>  games[game, ] <span class="ot">=</span> <span class="fu">sample</span>(die, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb40-12"><a href="playing-game-a-a-few-times.html#cb40-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb40-13"><a href="playing-game-a-a-few-times.html#cb40-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-14"><a href="playing-game-a-a-few-times.html#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(games) <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">&quot;game&quot;</span>, <span class="dv">1</span><span class="sc">:</span>number_games)</span>
+<span id="cb40-15"><a href="playing-game-a-a-few-times.html#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(games) <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">&quot;roll&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span>
+<span id="cb40-16"><a href="playing-game-a-a-few-times.html#cb40-16" aria-hidden="true" tabindex="-1"></a>games</span></code></pre></div>
+<pre><code>##       roll1 roll2 roll3 roll4
+## game1     1     6     4     1
+## game2     5     1     1     6
+## game3     2     5     5     4
+## game4     2     6     6     1
+## game5     4     1     1     1</code></pre>
+<p>Observe the calls of <code>rownames()</code> and <code>colnames()</code> to assign names to both the
+rows and the columns of the <code>games</code> matrix. In turn, the row and column names
+are created with <code>paste0()</code> to generate the necessary character vectors.</p>
+</div>
+<div id="playing-game-a-10-times" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Playing Game-A 10 times<a href="playing-game-a-a-few-times.html#playing-game-a-10-times" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Now that we have our <code>for()</code> loop in place, we can easily increase the number
+of games. For instance, consider 10 games. Taking into account the preceding
+code chunk, all we have to do is change the value of <code>number_games</code></p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="playing-game-a-a-few-times.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">133</span>)</span>
+<span id="cb42-2"><a href="playing-game-a-a-few-times.html#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="playing-game-a-a-few-times.html#cb42-3" aria-hidden="true" tabindex="-1"></a>die <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span></span>
+<span id="cb42-4"><a href="playing-game-a-a-few-times.html#cb42-4" aria-hidden="true" tabindex="-1"></a>number_games <span class="ot">=</span> <span class="dv">10</span></span>
+<span id="cb42-5"><a href="playing-game-a-a-few-times.html#cb42-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-6"><a href="playing-game-a-a-few-times.html#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize output matrix</span></span>
+<span id="cb42-7"><a href="playing-game-a-a-few-times.html#cb42-7" aria-hidden="true" tabindex="-1"></a>games <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> number_games, <span class="at">ncol =</span> <span class="dv">4</span>)</span>
+<span id="cb42-8"><a href="playing-game-a-a-few-times.html#cb42-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-9"><a href="playing-game-a-a-few-times.html#cb42-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (game <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>number_games) {</span>
+<span id="cb42-10"><a href="playing-game-a-a-few-times.html#cb42-10" aria-hidden="true" tabindex="-1"></a>  games[game, ] <span class="ot">=</span> <span class="fu">sample</span>(die, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb42-11"><a href="playing-game-a-a-few-times.html#cb42-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb42-12"><a href="playing-game-a-a-few-times.html#cb42-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-13"><a href="playing-game-a-a-few-times.html#cb42-13" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(games) <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">&quot;game&quot;</span>, <span class="dv">1</span><span class="sc">:</span>number_games)</span>
+<span id="cb42-14"><a href="playing-game-a-a-few-times.html#cb42-14" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(games) <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">&quot;roll&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span>
+<span id="cb42-15"><a href="playing-game-a-a-few-times.html#cb42-15" aria-hidden="true" tabindex="-1"></a>games</span></code></pre></div>
+<pre><code>##        roll1 roll2 roll3 roll4
+## game1      1     6     4     1
+## game2      5     1     1     6
+## game3      2     5     5     4
+## game4      2     6     6     1
+## game5      4     1     1     1
+## game6      4     3     4     2
+## game7      6     3     1     3
+## game8      4     2     1     1
+## game9      1     6     2     1
+## game10     5     1     6     5</code></pre>
+<p>As you can tell, we now get a matrix <code>games</code> with 10 rows and 4
+columns.</p>
+<p>We still need to determine the status of each game: do we win? do we lose?</p>
+<p>Conceptually, we could write another <code>for()</code> loop to determine the status of
+each game: win or lose; something like this</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="playing-game-a-a-few-times.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize (logical) vector</span></span>
+<span id="cb44-2"><a href="playing-game-a-a-few-times.html#cb44-2" aria-hidden="true" tabindex="-1"></a>wins <span class="ot">=</span> <span class="fu">logical</span>(<span class="at">length =</span> number_games)</span>
+<span id="cb44-3"><a href="playing-game-a-a-few-times.html#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="playing-game-a-a-few-times.html#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (game <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>number_games) {</span>
+<span id="cb44-5"><a href="playing-game-a-a-few-times.html#cb44-5" aria-hidden="true" tabindex="-1"></a>  wins[game] <span class="ot">=</span> <span class="fu">any</span>(games[game, ] <span class="sc">==</span> <span class="dv">6</span>)</span>
+<span id="cb44-6"><a href="playing-game-a-a-few-times.html#cb44-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb44-7"><a href="playing-game-a-a-few-times.html#cb44-7" aria-hidden="true" tabindex="-1"></a>wins</span></code></pre></div>
+<pre><code>##  [1]  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE  TRUE</code></pre>
+<p>What are we doing in the preceding loop? Simply put, we are applying the
+<code>any()</code> function to every row of matrix <code>games</code> to see if any of the row
+elements are equal to six. This is illustrated in the following diagram:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-27"></span>
+<img src="images/demere-10-games-any.png" alt="Diagram depicting the application of any() to all the rows of matrix games." width="90%" />
+<p class="caption">
+Figure 3.3: Diagram depicting the application of any() to all the rows of matrix games.
+</p>
+</div>
+<p>While there is nothing conceptually wrong with the above <code>for()</code> loop, we can
+take advantage of other functions in R to help us write code in a more compact
+way. Let’s learn about this topic in the next chapter.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="coding-game-a.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="vectorized-loops-with-apply.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["R-rolling-dice.pdf", "R-rolling-dice.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
