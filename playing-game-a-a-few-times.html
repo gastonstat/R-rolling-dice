@@ -270,10 +270,10 @@ if we wanted to play Game-A 50 times, or 100 times, or 1000 times.</p>
 </div>
 <div id="using-a-for-loop" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Using a <code>for()</code> loop<a href="playing-game-a-a-few-times.html#using-a-for-loop" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The above code generates the five following five games (each game with 4 rolls)</p>
+<p>The above code generates the following five games (each game with 4 rolls)</p>
 <p><img src="images/demere-5-games.png" width="40%" style="display: block; margin: auto;" /></p>
 <p>To avoid repeating the same commands multiple times, we can take advantage of
-loops, for example with a <code>for()</code> loop.</p>
+loops, for example a <code>for()</code> loop.</p>
 <p>Instead of using individual vectors <code>game_1</code>, <code>game_2</code>, etc, we are going to
 use a matrix to store the rolls of all games. One option for this matrix is to
 initialize it in a way that rows correspond to games, while columns correspond
@@ -317,7 +317,8 @@ are created with <code>paste0()</code> to generate the necessary character vecto
 <h2><span class="header-section-number">3.3</span> Playing Game-A 10 times<a href="playing-game-a-a-few-times.html#playing-game-a-10-times" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Now that we have our <code>for()</code> loop in place, we can easily increase the number
 of games. For instance, consider 10 games. Taking into account the preceding
-code chunk, all we have to do is change the value of <code>number_games</code></p>
+code chunk, all we have to do is change the value of <code>number_games</code> from 5
+to 10.</p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="playing-game-a-a-few-times.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">133</span>)</span>
 <span id="cb42-2"><a href="playing-game-a-a-few-times.html#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb42-3"><a href="playing-game-a-a-few-times.html#cb42-3" aria-hidden="true" tabindex="-1"></a>die <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span></span>
@@ -344,9 +345,9 @@ code chunk, all we have to do is change the value of <code>number_games</code></
 ## game8      4     2     1     1
 ## game9      1     6     2     1
 ## game10     5     1     6     5</code></pre>
-<p>As you can tell, we now get a matrix <code>games</code> with 10 rows and 4
+<p>As you can tell, we get a matrix <code>games</code> with 10 rows and 4
 columns.</p>
-<p>We still need to determine the status of each game: do we win? do we lose?</p>
+<p>We still need to determine the status of each game: do we win? or do we lose?</p>
 <p>Conceptually, we could write another <code>for()</code> loop to determine the status of
 each game: win or lose; something like this</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="playing-game-a-a-few-times.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize (logical) vector</span></span>

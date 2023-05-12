@@ -259,7 +259,7 @@ of a matrix. The elements of a matrix can be:</p>
 <li><p>both (rows &amp; cols): <code>MARGIN = c(1, 2)</code></p></li>
 </ul>
 <p>For example, say you want to get the <code>sum()</code> of all the elements in each
-row of <code>games</code>:</p>
+row of <code>games</code>. Here’s how to do that with <code>apply()</code>:</p>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="vectorized-loops-with-apply.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># row sum</span></span>
 <span id="cb47-2"><a href="vectorized-loops-with-apply.html#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(<span class="at">X =</span> games, <span class="at">MARGIN =</span> <span class="dv">1</span>, <span class="at">FUN =</span> sum)</span></code></pre></div>
 <pre><code>##  game1  game2  game3  game4  game5  game6  game7  game8  game9 game10 
@@ -274,7 +274,8 @@ in each column of <code>games</code>. This requires specifying <code>MARGIN = 2<
 <span id="cb49-2"><a href="vectorized-loops-with-apply.html#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(<span class="at">X =</span> games, <span class="at">MARGIN =</span> <span class="dv">2</span>, <span class="at">FUN =</span> prod)</span></code></pre></div>
 <pre><code>## roll1 roll2 roll3 roll4 
 ## 38400 19440  5760   720</code></pre>
-<p>Or what if you want to get the minimum in each row of <code>games</code>:</p>
+<p>Or what if you want to get the minimum in each row of <code>games</code>? All you have
+to do is <code>apply()</code> the <code>min</code> function:</p>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="vectorized-loops-with-apply.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># row minimum</span></span>
 <span id="cb51-2"><a href="vectorized-loops-with-apply.html#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(<span class="at">X =</span> games, <span class="at">MARGIN =</span> <span class="dv">1</span>, <span class="at">FUN =</span> min)</span></code></pre></div>
 <pre><code>##  game1  game2  game3  game4  game5  game6  game7  game8  game9 game10 
