@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Gaston Sanchez">
-<meta name="dcterms.date" content="2023-12-14">
 
-<title>Rolling Dice with R</title>
+<title>Rolling Dice with R - 1&nbsp; Introduction</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -32,7 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./01-intro.html" rel="next">
+<link href="./02-playing-game1.html" rel="next">
+<link href="./index.html" rel="prev">
 <link href="./images/favicon.ico" rel="icon">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -77,6 +76,7 @@ ga('send', {
 });
 </script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -86,7 +86,7 @@ ga('send', {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Rolling Dice with R</h1>
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -111,12 +111,12 @@ ga('send', {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">About</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">About</a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01-intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a>
+  <a href="./01-intro.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -158,11 +158,10 @@ ga('send', {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#about" id="toc-about" class="nav-link active" data-scroll-target="#about">About</a>
+  <li><a href="#description-of-game-a" id="toc-description-of-game-a" class="nav-link active" data-scroll-target="#description-of-game-a"><span class="toc-section-number">1.1</span>  Description of Game-A</a></li>
+  <li><a href="#probability-of-winning-game-a" id="toc-probability-of-winning-game-a" class="nav-link" data-scroll-target="#probability-of-winning-game-a"><span class="toc-section-number">1.2</span>  Probability of winning Game-A</a>
   <ul class="collapse">
-  <li><a href="#my-series-of-r-tutorials" id="toc-my-series-of-r-tutorials" class="nav-link" data-scroll-target="#my-series-of-r-tutorials">My Series of R Tutorials</a></li>
-  <li><a href="#donation" id="toc-donation" class="nav-link" data-scroll-target="#donation">Donation</a></li>
-  <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license">License</a></li>
+  <li><a href="#no-six-in-four-rolls" id="toc-no-six-in-four-rolls" class="nav-link" data-scroll-target="#no-six-in-four-rolls"><span class="toc-section-number">1.2.1</span>  No six in four rolls</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -172,80 +171,114 @@ ga('send', {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Rolling Dice with R</h1>
+<h1 class="title d-none d-lg-block"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p><a href="https://www.gastonsanchez.com" target="_blank"><b>Gaston Sanchez</b></a> </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">December 14, 2023</p>
-    </div>
-  </div>
     
   </div>
   
 
 </header>
 
-
-<section id="about" class="level1 unnumbered">
-<p><img src="images/demere-cover.png" title="Rolling Dice with R" class="quarto-cover-image img-fluid"></p><h1 class="unnumbered">About</h1>
-<p>In this manuscript I describe a couple of examples for implementing simulations of games of chance in R.</p>
-<section id="about-you" class="level4 unnumbered">
-<h4 class="unnumbered anchored" data-anchor-id="about-you">About You</h4>
-<p>I am assuming that you have some experience working with R. I’m also assuming that you have both R or RStudio installed in your computer. If this is not the case, you can take a look at <strong>Breaking the Ice with R</strong></p>
-<p><a href="https://www.gastonsanchez.com/R-ice-breaker" target="_blank">https://www.gastonsanchez.com/R-ice-breaker</a></p>
+<p>We are going to use a classic example in the history of probability: the problem posed by French gambler <a href="https://en.wikipedia.org/wiki/Antoine_Gombaud">Antoine Gombaud</a> (1607-1684), better known by his <em>nome de plume</em> “Chevalier De Méré”. By the way, he was not a nobleman, but just an amateur mathematician. Most important, for the history of mathematics and probability, he was an avid gambler.</p>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<figure class="figure">
+<img src="images/les-ouvres-de-chevalier-demere.jpg" title="Title: Antoine Gombaud's texts" class="img-fluid figure-img" style="width:90.0%">
+</figure>
+<p></p><figcaption class="figure-caption">Figure 1.1: Old manuscript with Antoine Gombaud’s texts</figcaption><p></p>
+</figure>
+</div>
+<p>Specifically, let’s focus on one type of gambling scenario which we will refer to as “Game-A”</p>
+<section id="description-of-game-a" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="description-of-game-a"><span class="header-section-number">1.1</span> Description of Game-A</h2>
+<p>This is a fairly simple game of dice in which you roll a die four times, and you win if you get at least one six.</p>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<figure class="figure">
+<img src="images/rolling-four-dice.jpg" title="Title: Rolling 4 dice in Game version A" class="img-fluid figure-img" style="width:30.0%">
+</figure>
+<p></p><figcaption class="figure-caption">Figure 1.2: Rolling 4 dice in Game version A</figcaption><p></p>
+</figure>
+</div>
+<p>Think about what could happen when rolling one die four times. For instance, some possible outcomes may be:</p>
+<ul>
+<li><p><code>1, 3, 5, 2</code> (you lose)</p></li>
+<li><p><code>2, 4, 6, 5</code> (you win)</p></li>
+<li><p><code>5, 6, 3, 6</code> (you win)</p></li>
+<li><p><code>4, 2, 1, 3</code> (you lose)</p></li>
+<li><p><code>1, 3, 5, 2</code> (you win)</p></li>
+</ul>
+<p><br></p>
+<p>This is how De Méré was reasoning about Game-A:</p>
+<ul>
+<li><p>the chance of getting a six in one roll of a die is 1/6 (this is correct)</p></li>
+<li><p>in four rolls of a die, the chance of getting one six would be <span class="math inline">\(4 \times 1/6 = 4/6 = 2/3\)</span> (this is incorrect)</p></li>
+</ul>
+<p>Based on this (incorrect) reasoning, he assumed that the odds were definitely in his favor. Interestingly, despite De Méré’s faulty reasoning about the probability of getting one six in four rolls, he was able to make money by playing this game.</p>
+<p>Why was he able to make money? Let’s find out the probability of winning in this type of game.</p>
 </section>
-<section id="citation" class="level4 unnumbered">
-<h4 class="unnumbered anchored" data-anchor-id="citation">Citation</h4>
-<p>You can cite this work as:</p>
-<p>Sanchez, G. (2022) Exploring Simulations in Games of Chance with R. <br> https://www.gastonsanchez.com/R-rolling-dice</p>
-<hr>
-</section>
-<section id="my-series-of-r-tutorials" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="my-series-of-r-tutorials">My Series of R Tutorials</h3>
-<p>This document is part of a series of texts that I’ve written about Programming and Data Analysis in R:</p>
+<section id="probability-of-winning-game-a" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="probability-of-winning-game-a"><span class="header-section-number">1.2</span> Probability of winning Game-A</h2>
+<p>Finding the probability of winning Game-A translates into finding the probability of getting at least one six in four rolls of a (fair) die:</p>
+<p><span class="math display">\[
+Prob(\text{winning Game-A}) = Prob(\text{getting at least one 6 in four rolls})
+\]</span></p>
+<p>This probability can easily be calculated with the <em>complement probability rule</em> which states that:</p>
+<blockquote class="blockquote">
+<p>the probability of one event is equal to 1 minus the probability of its complement event.</p>
+</blockquote>
+<p>Or in symbols:</p>
+<p><span class="math display">\[
+Prob(\text{E}) = 1 - Prob(\text{Not E})
+\]</span></p>
+<p>and equivalently:</p>
+<p><span class="math display">\[
+Prob(\text{Not E}) = 1 - Prob(\text{E})
+\]</span></p>
+<p>where:</p>
 <ul>
-<li><strong>Breaking the Ice with R: Getting Started with R and RStudio</strong></li>
+<li><span class="math inline">\(\text{E}\)</span> and <span class="math inline">\(\text{Not E}\)</span> are complement events (i.e.&nbsp;they cannot occur simultaneously)</li>
 </ul>
-<p><a href="https://www.gastonsanchez.com/R-ice-breaker" class="uri">https://www.gastonsanchez.com/R-ice-breaker</a></p>
-<ul>
-<li><strong>Tidy Hurricanes: Analyzing Tropical Storms with Tidyverse Tools</strong></li>
-</ul>
-<p><a href="https://www.gastonsanchez.com/R-tidy-hurricanes" class="uri">https://www.gastonsanchez.com/R-tidy-hurricanes</a></p>
-<ul>
-<li><strong>R Coding Basics: An Introduction to the Basics of Coding in R</strong></li>
-</ul>
-<p><a href="https://www.gastonsanchez.com/R-coding-basics" class="uri">https://www.gastonsanchez.com/R-coding-basics</a></p>
-<ul>
-<li><strong>Rolling Dice: Exploring Simulations in Games of Chance with R</strong></li>
-</ul>
-<p><a href="https://www.gastonsanchez.com/R-rolling-dice" class="uri">https://www.gastonsanchez.com/R-rolling-dice</a></p>
-<ul>
-<li><strong>Web Technologies in R: A Short Introduction to Web Data Technologies in R</strong></li>
-</ul>
-<p><a href="https://www.gastonsanchez.com/R-web-technologies" class="uri">https://www.gastonsanchez.com/R-web-technologies</a></p>
-<hr>
-</section>
-<section id="donation" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="donation">Donation</h3>
-<p>As a Data Science and Statistics educator, I love to share the work I do. Each month I spend dozens of hours curating learning materials like this resource. If you find any value and usefulness in it, please consider making a <a href="https://www.paypal.com/donate?business=ZF6U7K5MW25W2&amp;currency_code=USD" target="_blank">one-time donation—via paypal—in any amount</a> (e.g.&nbsp;the amount you would spend inviting me a cup of coffee or any other drink). Your support really matters.</p>
-<p><a href="https://www.paypal.com/donate?business=ZF6U7K5MW25W2&amp;currency_code=USD" target="_blank"><img src="https://www.gastonsanchez.com/images/donate.png" width="140" height="60"></a></p>
-</section>
-<section id="license" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="license">License</h3>
-<p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a><br>This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p>
+<p>A classic example of this type of complement events is “E = getting heads when flipping a coin” and “Not E = getting tails when flipping a coin”.</p>
+<p><span class="math display">\[
+Prob(\text{getting heads}) = 1 - Prob(\text{getting tails}) \\
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+Prob(\text{getting tails}) = 1 - Prob(\text{getting heads})
+\]</span></p>
+<p><br></p>
+<p>So, if we consider event “E = getting at least one six in four rolls”, then its complement event is “Not E = getting no six in four rolls”</p>
+<section id="no-six-in-four-rolls" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="no-six-in-four-rolls"><span class="header-section-number">1.2.1</span> No six in four rolls</h3>
+<p>The probability of getting no six in four rolls involves not getting a six in the first roll, <em>AND</em> not getting a six in the second roll, <em>AND</em> not getting a six in the third roll, <em>AND</em> not getting a six in the fourth roll. Because each roll is independent from the others, we can express this probability as the product of the probability in each roll:</p>
+<p><span class="math display">\[
+Prob(\text{no 6 in 4 rolls}) = Prob(\text{no 6 in 1st roll}) \times \dots \times Prob(\text{no 6 in 4th roll})
+\]</span></p>
+<p>In any single roll, the probability of getting no six is:</p>
+<p><span class="math display">\[
+Prob(\text{no six in one roll}) = \frac{5}{6}
+\]</span></p>
+<p>Therefore:</p>
+<p><span class="math display">\[\begin{align*}
+Prob(\text{no six in 4 rolls}) &amp;= Prob(\text{no 6 in 1st roll}) \times \dots \times Prob(\text{no 6 in 4th roll}) \\
+&amp;= \frac{5}{6} \times \frac{5}{6} \times \frac{5}{6} \times \frac{5}{6} \\
+&amp;= \left( \frac{5}{6} \right)^4 \\
+&amp;= \frac{625}{1296} = 0.482253
+\end{align*}\]</span></p>
+<p>Consequently, the probability of winning Game-A is:</p>
+<p><span class="math display">\[\begin{align*}
+Prob(\text{at least one six in 4 rolls}) &amp;= 1 - Prob(\text{no six in 4 rolls}) \\
+&amp;= 1 - \left( \frac{5}{6} \right)^4 \\
+&amp;= 0.517747
+\end{align*}\]</span></p>
+<p>Note that this probability of 0.517747 is not that much different from 0.5 (just slightly greater). But the difference is enough so that if you gamble in this game, you should expect to have a positive gain … <strong>in the long run</strong>.</p>
 
 
 </section>
@@ -352,10 +385,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">About</span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./01-intro.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./02-playing-game1.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Coding Game-A</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
