@@ -301,7 +301,7 @@ Prob(\text{at least one six in 4 rolls}) &amp;= 1 - Prob(\text{no six in 4 rolls
 <p>Of course, if you change the random seed and rerun this simulation, you will very likely obtain a slightly different proportion of wins. But still close enough to the actual theoretical probability of winning Game-A.</p>
 <section id="graphing-cumulative-gains" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="graphing-cumulative-gains"><span class="header-section-number">7.1</span> Graphing Cumulative Gains</h2>
-<p>Like in chapter <a href="#playing-game1-100times">Playing Game-A 100 times</a>, let’s visualize what’s going on with the sequence of cumulative gains—assuming you gain $1 if you win a game, and you gain -$1 if you lose a game.</p>
+<p>Like in chapter <a href="05-playing-game1-100times.html">Playing Game-A 100 times</a>, let’s visualize what’s going on with the sequence of cumulative gains—assuming you gain $1 if you win a game, and you gain -$1 if you lose a game.</p>
 <section id="plotting-the-first-simulation" class="level3" data-number="7.1.1">
 <h3 data-number="7.1.1" class="anchored" data-anchor-id="plotting-the-first-simulation"><span class="header-section-number">7.1.1</span> Plotting the first simulation</h3>
 <p>The main data object that we have is the matrix <code>simulations</code>. This is a 1000 by 100 matrix. So let’s begin with a <em>ggplot</em> to visualize the cumulative gains of the games in the first simulation. That is, the games in the first column of this matrix.</p>
@@ -327,7 +327,7 @@ game9      9   -3
 game10    10   -4</code></pre>
 </div>
 </div>
-<p>The next step is to pass <code>dat_sim1</code> to <code>ggplot()</code> and friends to obtain a timeline, very similar to the one obtain in section <a href="#cum-gains-ggplot">Cumulative Gains with ggplot2</a></p>
+<p>The next step is to pass <code>dat_sim1</code> to <code>ggplot()</code> and friends to obtain a timeline, very similar to the one obtain in section <a href="05-playing-game1-100times.html#cum-gains-ggplot">Cumulative Gains with ggplot2</a></p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dat_sim1, <span class="fu">aes</span>(<span class="at">x =</span> games, <span class="at">y =</span> gain)) <span class="sc">+</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"gray50"</span>) <span class="sc">+</span></span>
@@ -528,6 +528,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Copyright 2022, <a href="https://www.gastonsanchez.com">Gaston Sanchez</a></div>   
+    <div class="nav-footer-right"><a href="https://www.paypal.com/donate?business=ZF6U7K5MW25W2&amp;currency_code=USD" target="_blank">Donate via PayPal</a></div>
+  </div>
+</footer>
 
 
 
